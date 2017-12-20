@@ -25,6 +25,7 @@
 #          ...     additional arguments passed to plot(). 
 #
 # (c) Lasse Ruokolainen, 2016
+#     last modified: December 2017
 ############################################################################
 
 plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE,
@@ -48,6 +49,7 @@ plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE
 		}
 	}
   
+  	# Define colours:
 	if(is.null(cols)){
 		defc = c('lightblue','red3','gold','olivedrab','purple',
 				 'royalblue','firebrick','tan','springgreen')
@@ -60,11 +62,16 @@ plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE
 	ed.col = as.character(as.numeric(group))
 	k=0; for(ii in sort(unique(ed.col))){k=k+1; ed.col[ed.col==ii] = col[k]}
 	
+	# Make plot:
 	plot(Y,bg=bg.col,col=ed.col,pch=pch,type='n',...)
+	
+	# Decorate:
 	if(!is.null(group)){
 	    for(ii in levels(group)){
+	    	if(sum(group==ii)==1) next # only use those groups that have multiple members
+	    	
 	    	tmp = bg.col[group==ii]
-	    	if(spider==T){
+	    	if(spider==T){	    		
 				ordispider(Y[group==ii,],
 						   rep(1,sum(group==ii)),col=tmp,lwd=.5)
 			}
@@ -77,7 +84,9 @@ plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE
 	}
 	if(!is.null(cluster)){
 		ordicluster(Y,cluster,col='gray80')
-	}		
+	}
+
+	# Add points:		
 	if(type=='n'){
 		cntr = cbind(tapply(Y[,1],group,'mean'),tapply(Y[,2],group,'mean'))
 		points(cntr,col=defc,pch=16,...)		
@@ -112,6 +121,8 @@ plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE
 		}
 	
 	}
+	
+	# Add legend:
 	if(legend==TRUE){
 		legend('topleft',legend=levels(group),ncol=floor(nlevels(group)/2),pch=21,pt.bg=defc)
 	}
