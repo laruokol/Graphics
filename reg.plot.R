@@ -13,9 +13,11 @@
 #                  to plot(...)
 #
 # (c) Lasse Ruokolainen, 2017
+#         last modified -- January 2018
 #############################################################
 
-reg.plot = function(x,y,group=NULL,SE=T,col=NULL,pch=21,leg.pos='topleft',...){
+reg.plot = function(x,y,group=NULL,SE=T,col=NULL,pch=21,leg.pos='topleft',
+                    leg.title=NULL,...){
 
 	if(is.null(group)) group = factor(rep('1',length(x)))
 	if(is.null(col)){
@@ -62,5 +64,5 @@ reg.plot = function(x,y,group=NULL,SE=T,col=NULL,pch=21,leg.pos='topleft',...){
 	}
 	
 	legend(leg.pos,legend=levels(group),text.font=3,bty='n',
-		   pch=pch,pt.bg=col,col=col,lwd=2,x.intersp=.8)
+		   pch=pch,pt.bg=col,col=col,lwd=2,x.intersp=.8,title=leg.title)
 }
