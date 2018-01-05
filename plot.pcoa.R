@@ -25,12 +25,12 @@
 #          ...     additional arguments passed to plot(). 
 #
 # (c) Lasse Ruokolainen, 2016
-#     last modified: December 2017
+#     last modified: January 2017
 ############################################################################
 
 plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE,
 				    ellipse=TRUE,spider=TRUE,cluster=NULL,pch=21,
-				    col=NULL,lwd.ellipse=NULL,type='p',
+				    col=NULL,lwd.ellipse=NULL,lwd.spider=NULL,type='p',
 				    labels=TRUE,lab.type='ellipse',lab.cex=NULL,...){
 	
 	# Test ordination method:
@@ -73,7 +73,7 @@ plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE
 	    	tmp = bg.col[group==ii]
 	    	if(spider==T){	    		
 				ordispider(Y[group==ii,],
-						   rep(1,sum(group==ii)),col=tmp,lwd=.5)
+						   rep(1,sum(group==ii)),col=tmp,lwd=lwd.spider)
 			}
 	    	if(ellipse==T){			
 				ordiellipse(Y[group==ii,],
@@ -96,8 +96,8 @@ plot.pcoa = function(ord,group=NULL,choises=c(1,2),ci=0.75,cols=NULL,legend=TRUE
 	
 	# Add group identification:
 	if(labels==TRUE){
-		library(plotrix)
-		library(dplyr)
+		require(plotrix,quietly = T,warn.conflicts = F)
+		require(dplyr,quietly = T,warn.conflicts = F)
 		tmp = Y; colnames(tmp) = c('X1','X2')
 		s = as.tbl(data.frame(tmp,group)) %>% group_by(group) %>% summarize(mu1=mean(X1),mu2=mean(X2))
 		s = as.matrix(s[,2:3])
