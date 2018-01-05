@@ -21,7 +21,7 @@ color.highlight = function(group, selection, colors=NULL, alpha=0.5){
 	}
 	
 	cols = group
-	levels(cols) = cc[nlevels(group)]
+	levels(cols) = cc[1:nlevels(group)]
 	cols = as.character(cols)
 
 	for(ii in 1:length(cols)){
